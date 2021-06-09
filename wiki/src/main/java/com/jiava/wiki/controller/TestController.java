@@ -17,10 +17,10 @@ public class TestController {
     //@RequestMapping( "/hello")
     @GetMapping("/hello")
     public String hello(){
-        return "hello world"+testHello;
+        return "hello world!"+testHello;
     }
     @PostMapping("/hello/post")
     public String hello(String name){
-        return "hello world! Post"+name;
+        return "hello world! Post."+name;
     }
 }
