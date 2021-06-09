@@ -1,5 +1,6 @@
 package com.jiava.wiki.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -11,6 +12,7 @@ import org.springframework.core.env.Environment;
 //下面如果要访问其他包，要加@ComponentScan
 //扫描多个包的写法@ComponentScan({"com.jiava","com.test"})
 @ComponentScan("com.jiava")
+@MapperScan("com.jiava.wiki.mapper")
 @SpringBootApplication
 public class WikiApplication {
 
