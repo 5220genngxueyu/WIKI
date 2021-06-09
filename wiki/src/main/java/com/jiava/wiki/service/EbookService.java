@@ -5,6 +5,7 @@ import com.jiava.wiki.domain.EbookExample;
 import com.jiava.wiki.mapper.EbookMapper;
 import com.jiava.wiki.req.EbookReq;
 import com.jiava.wiki.resp.EbookResp;
+import com.jiava.wiki.util.CopyUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +24,7 @@ public class EbookService {
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         criteria.andNameLike("%" + req.getName() + "%");
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
-        List<EbookResp> respList = new ArrayList<>();
-        for (Ebook ebook : ebookList) {
-            EbookResp ebookResp = new EbookResp();
-            //Spring提供的工具类，可以将前一个的类属性
-            //拷贝到后一个去
-
-            BeanUtils.copyProperties(ebook,ebookResp);
-            respList.add(ebookResp);
-        }
+        List<EbookResp> respList = CopyUtil.copyList(ebookList,EbookResp.class);
         return respList;
     }
 }
