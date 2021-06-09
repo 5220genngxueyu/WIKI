@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
 
+//下面这个注解只是会扫描它所在的包下的子包，其他的就访问不到了
 @SpringBootApplication
 public class WikiApplication {
 
