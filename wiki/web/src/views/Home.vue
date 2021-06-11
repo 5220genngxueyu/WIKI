@@ -12,7 +12,7 @@
         <a-sub-menu key="sub1">
           <template #title>
                 <span>
-                  <user-outlined />
+                  <user-outlined/>
                   subnav 1
                 </span>
           </template>
@@ -24,7 +24,7 @@
         <a-sub-menu key="sub2">
           <template #title>
                 <span>
-                  <laptop-outlined />
+                  <laptop-outlined/>
                   subnav 2
                 </span>
           </template>
@@ -36,7 +36,7 @@
         <a-sub-menu key="sub3">
           <template #title>
                 <span>
-                  <notification-outlined />
+                  <notification-outlined/>
                   subnav 3
                 </span>
           </template>
@@ -50,36 +50,23 @@
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-
-      <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="listData">
-        <template #footer>
-          <div>
-            <b>ant design vue</b>
-            footer part
-          </div>
-        </template>
+      <a-list item-layout="vertical" size="large" :grid="{gutter: 20, column: 3}" :data-source="ebooks">
         <template #renderItem="{ item }">
-          <a-list-item key="item.title">
+          <a-list-item key="item.name">
             <template #actions>
           <span v-for="{ type, text } in actions" :key="type">
-            <component v-bind:is="type" style="margin-right: 8px" />
+            <component v-bind:is="type" style="margin-right: 8px"/>
             {{ text }}
           </span>
             </template>
-            <template #extra>
-              <img
-                  width="272"
-                  alt="logo"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-              />
-            </template>
             <a-list-item-meta :description="item.description">
               <template #title>
-                <a :href="item.href">{{ item.title }}</a>
+                <a :href="item.href">{{ item.name }}</a>
               </template>
-              <template #avatar><a-avatar :src="item.avatar" /></template>
+              <template #avatar>
+                <a-avatar :src="item.cover"/>
+              </template>
             </a-list-item-meta>
-            {{ item.content }}
           </a-list-item>
         </template>
       </a-list>
@@ -90,7 +77,7 @@
 
 <script lang="ts">
 
-import {defineComponent, onMounted, ref, reactive,toRef} from 'vue';
+import {defineComponent, onMounted, ref, reactive, toRef} from 'vue';
 import axios from 'axios'
 
 const listData: any = [];
@@ -124,19 +111,19 @@ export default defineComponent({
     })
     return {
       ebooks,
-      ebooks2 : toRef(ebooks1,"books"),
+      ebooks2: toRef(ebooks1, "books"),
       listData,
-      pagination : {
+      pagination: {
         onChange: (page: any) => {
           console.log(page);
         },
         pageSize: 3,
       },
-      actions:  [
-      { type: 'StarOutlined', text: '156' },
-      { type: 'LikeOutlined', text: '156' },
-      { type: 'MessageOutlined', text: '2' },
-    ],
+      actions: [
+        {type: 'StarOutlined', text: '156'},
+        {type: 'LikeOutlined', text: '156'},
+        {type: 'MessageOutlined', text: '2'},
+      ],
     }
   }
 });
