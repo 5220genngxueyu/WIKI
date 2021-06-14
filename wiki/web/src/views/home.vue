@@ -1,6 +1,5 @@
 <template>
   <a-layout style="padding: 24px 0; background: #fff">
-
     <a-layout-sider width="200" style="background: #fff">
 
       <a-menu
@@ -71,7 +70,6 @@
         </template>
       </a-list>
     </a-layout-content>
-
   </a-layout>
 </template>
 
