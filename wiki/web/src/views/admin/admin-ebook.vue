@@ -43,7 +43,7 @@ export default defineComponent({
       pageSize:2,
       total: 0
     });
-const loading =ref(false);
+    const loading =ref(false);
     const columns = [
       {
         title: '封面',
