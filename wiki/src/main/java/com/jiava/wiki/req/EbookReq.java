@@ -1,6 +1,6 @@
 package com.jiava.wiki.req;
 
-public class EbookReq {
+public class EbookReq extends PageReq{
     public Long getId() {
         return id;
     }

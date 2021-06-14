@@ -5,6 +5,7 @@ import com.jiava.wiki.domain.Ebook;
 import com.jiava.wiki.req.EbookReq;
 import com.jiava.wiki.resp.CommonResp;
 import com.jiava.wiki.resp.EbookResp;
+import com.jiava.wiki.resp.PageResp;
 import com.jiava.wiki.service.DemoService;
 import com.jiava.wiki.service.EbookService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,8 @@ public class EbookController {
 
     @GetMapping("/list")
     public CommonResp list(EbookReq req){
-        CommonResp<List<EbookResp> > resp = new CommonResp<>();
-        List<EbookResp> list=ebookService.list(req);
+        CommonResp<PageResp<EbookResp> > resp = new CommonResp<>();
+        PageResp<EbookResp> list=ebookService.list(req);
         resp.setContent(list);
         return resp;
     }

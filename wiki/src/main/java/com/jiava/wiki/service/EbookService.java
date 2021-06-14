@@ -8,6 +8,7 @@ import com.jiava.wiki.domain.EbookExample;
 import com.jiava.wiki.mapper.EbookMapper;
 import com.jiava.wiki.req.EbookReq;
 import com.jiava.wiki.resp.EbookResp;
+import com.jiava.wiki.resp.PageResp;
 import com.jiava.wiki.util.CopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
-    public List<EbookResp> list(EbookReq req) {
+    public PageResp<EbookResp> list(EbookReq req) {
 
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
@@ -34,13 +35,16 @@ public class EbookService {
             criteria.andNameLike("%" + req.getName() + "%");
         }
         //PageHelper只会对之后第一条查询数据生效,所以和要分页的sql放在一起
-        PageHelper.startPage(1,3);
+        PageHelper.startPage(req.getPage(),req.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo=new PageInfo<>(ebookList);
         LOG.info("总行数:{}", pageInfo.getTotal());
         LOG.info("总页数:{}",pageInfo.getPages());
         List<EbookResp> respList = CopyUtil.copyList(ebookList,EbookResp.class);
-        return respList;
+        PageResp<EbookResp> pageResp=new PageResp<>();
+        pageResp.setList(respList);
+        pageResp.setTotal(pageInfo.getTotal());
+        return pageResp;
     }
 }
