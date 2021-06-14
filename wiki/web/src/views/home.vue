@@ -125,7 +125,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.ant-avatar[data-v-fae5bece] {
+.ant-avatar {
   width: 50px;
   height: 50px;
   line-height: 50px;
