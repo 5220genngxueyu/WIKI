@@ -1,5 +1,7 @@
 package com.jiava.wiki.service;
 
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jiava.wiki.config.WikiApplication;
@@ -62,5 +64,9 @@ public class EbookService {
             //更新
             ebookMapper.updateByPrimaryKey(ebook);
         }
+    }
+
+    public void delete(Long id){
+        ebookMapper.deleteByPrimaryKey(id);
     }
 }

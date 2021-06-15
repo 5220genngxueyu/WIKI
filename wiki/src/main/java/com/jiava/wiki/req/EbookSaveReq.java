@@ -1,6 +1,10 @@
 package com.jiava.wiki.req;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.jiava.wiki.util.JsonLongSerializer;
+
 public class EbookSaveReq {
+    @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
 
     private String name;

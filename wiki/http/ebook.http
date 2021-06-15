@@ -6,3 +6,6 @@ GET http://localhost:8881/ebook/list?page=1&size=4
 ###
 
 POST http://localhost:8881/ebook/save
+
+###
+DELETE http://localhost:8881/ebook/delete/59920006435180540

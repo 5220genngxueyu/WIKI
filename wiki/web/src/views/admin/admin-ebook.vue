@@ -24,7 +24,7 @@
             <a-button type="primary" @click="edit(record)">
               编辑
             </a-button>
-            <a-button type="primary">
+            <a-button type="primary" @click="handleDelete(record.id)">
               删除
             </a-button>
           </a-space>
@@ -176,6 +176,23 @@ export default defineComponent({
       modalVisible.value = true;
       ebook.value=record;
     };
+    //删除
+    //Long类型对应的前段类型是number
+    const handleDelete = (id: number) => {
+      axios.delete("/ebook/delete/"+
+         id).then((response) => {
+
+        const data = response.data;
+        if(data.success){
+
+          //重新加载列表
+          handleQuery({
+            page: pagination.value.current,
+            size: pagination.value.pageSize,
+          });
+        }
+      });
+    };
     onMounted(function () {
       handleQuery({
         page: 1,
@@ -191,6 +208,7 @@ export default defineComponent({
       handleTableChange,
       edit,
       add,
+      handleDelete,
       ebook,
       modalVisible,
       modalLoading,

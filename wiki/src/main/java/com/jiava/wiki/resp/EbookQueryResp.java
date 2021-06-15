@@ -1,7 +1,11 @@
 package com.jiava.wiki.resp;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.jiava.wiki.util.JsonLongSerializer;
+
 //可能有时候返回给前端的不需要那么多信息，就可以在这个类中随意删改，而不去改动原来的类
 public class EbookQueryResp {
+    @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
 
     private String name;
