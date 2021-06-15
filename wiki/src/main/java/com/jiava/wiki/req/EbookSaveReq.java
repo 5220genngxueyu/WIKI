@@ -1,7 +1,6 @@
-package com.jiava.wiki.resp;
+package com.jiava.wiki.req;
 
-//可能有时候返回给前端的不需要那么多信息，就可以在这个类中随意删改，而不去改动原来的类
-public class EbookResp {
+public class EbookSaveReq {
     private Long id;
 
     private String name;
@@ -90,5 +89,24 @@ public class EbookResp {
 
     public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append(", category1Id=").append(category1Id);
+        sb.append(", category2Id=").append(category2Id);
+        sb.append(", description=").append(description);
+        sb.append(", cover=").append(cover);
+        sb.append(", docCount=").append(docCount);
+        sb.append(", viewCount=").append(viewCount);
+        sb.append(", voteCount=").append(voteCount);
+        sb.append("]");
+        return sb.toString();
     }
 }
