@@ -3,10 +3,12 @@ package com.jiava.wiki.req;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jiava.wiki.util.JsonLongSerializer;
 
+import javax.validation.constraints.NotNull;
+
 public class EbookSaveReq {
     @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
-
+    @NotNull(message="【名称】不能为空")
     private String name;
 
     private Long category1Id;

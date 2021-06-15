@@ -1,6 +1,6 @@
 ##
 #虽然是要求一个类，不过Spring会自动映射到类里面的属性，EbookReq里有name字段就能识别
-GET http://localhost:8881/ebook/list?page=1&size=4
+GET http://localhost:8881/ebook/list?page=1&size=1001
 
 
 ###
