@@ -6,7 +6,7 @@ import com.jiava.wiki.util.JsonLongSerializer;
 public class CategoryQueryResp {
     @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
-
+    @JsonSerialize(using = JsonLongSerializer.class )
     private Long parent;
 
     private String name;

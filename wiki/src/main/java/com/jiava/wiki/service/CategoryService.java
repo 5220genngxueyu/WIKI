@@ -33,7 +33,7 @@ public class CategoryService {
 
         CategoryExample categoryExample = new CategoryExample();
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
-
+        categoryExample.setOrderByClause("sort asc");
         //PageHelper只会对之后第一条查询数据生效,所以和要分页的sql放在一起
         PageHelper.startPage(req.getPage(),req.getSize());
         List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
@@ -46,6 +46,16 @@ public class CategoryService {
         pageResp.setList(respList);
         pageResp.setTotal(pageInfo.getTotal());
         return pageResp;
+    }
+
+    public List<CategoryQueryResp> all() {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
+
+        List<CategoryQueryResp> respList = CopyUtil.copyList(categoryList, CategoryQueryResp.class);
+
+        return respList;
     }
 //    保存
     public void save(CategorySaveReq req){

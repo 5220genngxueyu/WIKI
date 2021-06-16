@@ -8,7 +8,8 @@ import javax.validation.constraints.NotNull;
 public class CategorySaveReq {
     @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
-
+    @JsonSerialize(using = JsonLongSerializer.class )
+    @NotNull(message="【父分类】不能为空")
     private Long parent;
     @NotNull(message="【名称】不能为空")
     private String name;
