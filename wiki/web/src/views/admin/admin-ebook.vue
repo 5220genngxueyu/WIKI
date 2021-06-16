@@ -61,10 +61,9 @@
       </a-form-item>
       <a-form-item label="分类">
         <a-cascader v-model:value="categoryIds"
-                    :field-names="{ label1: 'name', value: 'id', children: 'children'}"
+                    :field-names="{ label: 'name', value: 'id', children: 'children'}"
                     :options="level1"
         />
-        <a-input v-model:value="ebook.category1Id" />
       </a-form-item>
 
       <a-form-item label="描述">
