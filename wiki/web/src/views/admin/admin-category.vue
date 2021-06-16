@@ -16,7 +16,7 @@
       <a-table
           :columns="columns"
           :row-key="record => record.id"
-          :data-source="categorys"
+          :data-source="level1"
           :loading="loading"
           :pagination="false"
       >
@@ -76,6 +76,7 @@ export default defineComponent({
   name: 'AdminCategory',
   setup() {
     const categorys = ref();
+    const level1 = ref();
     const loading =ref(false);
     const category=ref();
     const modalVisible = ref(false);
@@ -111,6 +112,10 @@ export default defineComponent({
         const data = response.data;
         if(data.success) {
           categorys.value = data.content;
+          console.log("原始数组：",categorys.value);
+          level1.value=[];
+          level1.value=Tool.array2Tree(categorys.value,0);
+          console.log("树形结构：",level1);
         }else{
           message.error(data.message);
         }
@@ -172,7 +177,7 @@ export default defineComponent({
       });
 
     return {
-      categorys,
+      level1,
       columns,
       loading,
       edit,
