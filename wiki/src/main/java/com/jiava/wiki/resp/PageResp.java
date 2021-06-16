@@ -1,9 +1,13 @@
 package com.jiava.wiki.resp;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.jiava.wiki.util.JsonLongSerializer;
+
 import java.util.List;
 
 public class PageResp<T> {
-    private long total;
+    @JsonSerialize(using = JsonLongSerializer.class )
+    private Long total;
 
     private List<T> list;
 
