@@ -1,9 +1,9 @@
-package com.jiava.wiki.domain;
+package com.jiava.wiki.resp;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jiava.wiki.util.JsonLongSerializer;
 
-public class Category {
+public class CategoryQueryResp {
     @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
 

@@ -1,16 +1,18 @@
-package com.jiava.wiki.domain;
+package com.jiava.wiki.req;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jiava.wiki.util.JsonLongSerializer;
 
-public class Category {
+import javax.validation.constraints.NotNull;
+
+public class CategorySaveReq {
     @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
 
     private Long parent;
-
+    @NotNull(message="【名称】不能为空")
     private String name;
-
+    @NotNull(message="【排序】不能为空")
     private Integer sort;
 
     public Long getId() {
