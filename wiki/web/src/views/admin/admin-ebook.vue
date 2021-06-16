@@ -77,6 +77,8 @@
 import {defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios'
 import {message} from 'ant-design-vue';
+import {Tool} from '@/util/tool';
+
 export default defineComponent({
   name: 'AdminEbook',
   setup() {
@@ -87,6 +89,9 @@ export default defineComponent({
       total: 0
     });
     const loading =ref(false);
+    const ebook=ref();
+    const modalVisible = ref(false);
+    const modalLoading = ref(false);
     const columns = [
       {
         title: '封面',
@@ -160,9 +165,7 @@ export default defineComponent({
         size: pagination.pageSize
       });
     };
-    const ebook=ref();
-    const modalVisible = ref(false);
-    const modalLoading = ref(false);
+
     const handleModalOk = () => {
       modalLoading.value = true;
       axios.post("/ebook/save",
@@ -195,7 +198,7 @@ export default defineComponent({
      */
     const edit = (record: any) => {
       modalVisible.value = true;
-      ebook.value=record;
+      ebook.value=Tool.copy(record);
     };
     //删除
     //Long类型对应的前段类型是number
