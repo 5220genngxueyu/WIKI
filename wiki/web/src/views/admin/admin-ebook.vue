@@ -59,12 +59,14 @@
       <a-form-item label="名称">
         <a-input v-model:value="ebook.name" />
       </a-form-item>
-      <a-form-item label="分类一">
+      <a-form-item label="分类">
+        <a-cascader v-model:value="categoryIds"
+                    :field-names="{ label1: 'name', value: 'id', children: 'children'}"
+                    :options="level1"
+        />
         <a-input v-model:value="ebook.category1Id" />
       </a-form-item>
-      <a-form-item label="分类二">
-        <a-input v-model:value="ebook.category2Id" />
-      </a-form-item>
+
       <a-form-item label="描述">
         <a-input v-model:value="ebook.description" type="textarea" />
       </a-form-item>
@@ -88,6 +90,8 @@ export default defineComponent({
       pageSize:4,
       total: 0
     });
+    const categoryIds = ref();
+    const level1= ref();
     const loading =ref(false);
     const ebook=ref();
     const modalVisible = ref(false);
@@ -154,6 +158,23 @@ export default defineComponent({
         }
       });
     };
+    const handleQueryCategory = () => {
+      loading.value = true;
+
+      axios.get("/category/all").then((response) => {
+        loading.value = false;
+        const data = response.data;
+        if(data.success) {
+          const categorys = data.content;
+          console.log("原始数组：",categorys);
+          level1.value=[];
+          level1.value=Tool.array2Tree(categorys,0);
+          console.log("树形结构：",level1);
+        }else{
+          message.error(data.message);
+        }
+      });
+    };
 
     /**
      * 表格点击页码时触发
@@ -168,6 +189,8 @@ export default defineComponent({
 
     const handleModalOk = () => {
       modalLoading.value = true;
+      ebook.value.category1Id = categoryIds.value[0];
+      ebook.value.category2Id = categoryIds.value[1];
       axios.post("/ebook/save",
        ebook.value).then((response) => {
         modalLoading.value=false;
@@ -199,6 +222,7 @@ export default defineComponent({
     const edit = (record: any) => {
       modalVisible.value = true;
       ebook.value=Tool.copy(record);
+      categoryIds.value=[ebook.value.category1Id,ebook.value.category2Id]
     };
     //删除
     //Long类型对应的前段类型是number
@@ -227,6 +251,7 @@ export default defineComponent({
       });
     };
     onMounted(function () {
+      handleQueryCategory();
       handleQuery({
         page: 1,
         size: pagination.value.pageSize,
@@ -239,6 +264,9 @@ export default defineComponent({
       columns,
       loading,
       handleTableChange,
+      handleQueryCategory,
+      categoryIds,
+      level1,
       edit,
       add,
       name,
