@@ -24,6 +24,7 @@ public class EbookController {
         resp.setContent(list);
         return resp;
     }
+
     @PostMapping("/save")
     public CommonResp save(@Valid @RequestBody EbookSaveReq req){
         CommonResp resp = new CommonResp<>();

@@ -4,9 +4,15 @@
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       <p>
-        <a-button type="primary" @click="add()" size="large">
-          新增
-        </a-button>
+        <a-space size="small">
+          <a-input v-model:value="name" placeholder="Basic usage" />
+          <a-button type="primary" @click="choose()" size="large">
+            查询
+          </a-button>
+          <a-button type="primary" @click="add()" size="large">
+            新增
+          </a-button>
+        </a-space>
       </p>
       <a-table
           :columns="columns"
@@ -127,7 +133,8 @@ export default defineComponent({
       axios.get("/ebook/list", {
         params:{
           page:params.page,
-          size:params.size
+          size:params.size,
+          name:params.name,
         }
       }).then((response) => {
         loading.value = false;
@@ -172,6 +179,7 @@ export default defineComponent({
           });
         }else{
           message.error(data.message);
+
         }
       });
     };
@@ -206,6 +214,15 @@ export default defineComponent({
         }
       });
     };
+    const name = ref<string>('');
+    const choose = (params: any) => {
+      loading.value = true;
+      handleQuery({
+        page: pagination.value.current,
+        size: pagination.value.pageSize,
+        name: name.value,
+      });
+    };
     onMounted(function () {
       handleQuery({
         page: 1,
@@ -221,7 +238,9 @@ export default defineComponent({
       handleTableChange,
       edit,
       add,
+      name,
       handleDelete,
+      choose,
       ebook,
       modalVisible,
       modalLoading,
@@ -230,3 +249,10 @@ export default defineComponent({
   }
 });
 </script>
+<style>
+img {
+  vertical-align: middle;
+  border-style: none;
+  width: 50px;
+}
+</style>
