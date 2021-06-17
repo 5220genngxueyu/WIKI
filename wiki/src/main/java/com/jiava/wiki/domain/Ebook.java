@@ -8,9 +8,9 @@ public class Ebook {
     private Long id;
 
     private String name;
-    @JsonSerialize(using = JsonLongSerializer.class )
+
     private Long category1Id;
-    @JsonSerialize(using = JsonLongSerializer.class )
+
     private Long category2Id;
 
     private String description;

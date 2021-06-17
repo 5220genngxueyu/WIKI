@@ -1,6 +1,10 @@
 package com.jiava.wiki.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.jiava.wiki.util.JsonLongSerializer;
+
 public class Category {
+
     private Long id;
 
     private Long parent;

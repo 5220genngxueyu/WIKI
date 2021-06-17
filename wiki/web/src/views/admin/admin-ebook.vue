@@ -225,8 +225,8 @@ export default defineComponent({
       categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id]
     };
     //删除
-    //Long类型对应的前段类型是number
-    const handleDelete = (id: number) => {
+    //这里id由雪花算法生成，如果后端不转化为string传递过来就会精度丢失
+    const handleDelete = (id: string) => {
       axios.delete("/ebook/delete/" +
           id).then((response) => {
 
@@ -250,12 +250,13 @@ export default defineComponent({
         name: name.value,
       });
     };
+    //这里的cid和category1Id、category2Id后端设置为Long，但应该不会爆精度，所以可以用number接受
+    //Js语言这些参数指定都是假的，就算只定了cid:number ，传字符串进来cid就是一个字符串
     const getCategoryName = (cid: number) => {
       let result = "";
       categorys.forEach((item: any) => {
         if(item.id === cid){
           result = item.name;
-
         }
       });
       return result;

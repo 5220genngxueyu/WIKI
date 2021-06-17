@@ -6,7 +6,7 @@ import com.jiava.wiki.util.JsonLongSerializer;
 import java.util.List;
 
 public class PageResp<T> {
-    @JsonSerialize(using = JsonLongSerializer.class )
+
     private Long total;
 
     private List<T> list;
