@@ -48,8 +48,12 @@ public class DocService {
         return pageResp;
     }
 
-    public List<DocQueryResp> all() {
+    public List<DocQueryResp> all(DocQueryReq req) {
         DocExample docExample = new DocExample();
+        DocExample.Criteria criteria = docExample.createCriteria();
+       if(!ObjectUtils.isEmpty(req.getEbookId())){
+           criteria.andEbookIdEqualTo(req.getEbookId());
+       }
         docExample.setOrderByClause("sort asc");
         List<Doc> docList = docMapper.selectByExample(docExample);
 

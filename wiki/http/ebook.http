@@ -9,3 +9,6 @@ POST http://localhost:8881/ebook/save
 
 ###
 DELETE http://localhost:8881/ebook/delete/59920006435180540
+
+###
+GET http://localhost:8881/doc/all?ebookId=2

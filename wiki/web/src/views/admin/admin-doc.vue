@@ -94,10 +94,12 @@ import {defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios'
 import {message} from 'ant-design-vue';
 import {Tool} from '@/util/tool';
+import {useRoute} from "vue-router";
 
 export default defineComponent({
   name: 'AdminDoc',
   setup() {
+    const route=useRoute();
     const docs = ref();
     const level1 = ref();
     const loading = ref(false);
@@ -132,7 +134,12 @@ export default defineComponent({
     const handleQuery = () => {
       loading.value = true;
 
-      axios.get("/doc/all").then((response) => {
+      axios.get("/doc/all",
+          {
+            params:{
+              ebookId:route.query.ebookId,
+            }
+          }).then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
@@ -190,7 +197,9 @@ export default defineComponent({
     // 新增
     const add = () => {
       modalVisible.value = true;
-      doc.value = {};
+      doc.value = {
+        ebookId:route.query.ebookId
+      };
       treeSelectData.value = Tool.copy(level1.value);
       treeSelectData.value.unshift({id: 0, name: '无'});
     };

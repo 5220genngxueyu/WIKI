@@ -20,7 +20,7 @@ public class DocController {
     @GetMapping("/all")
     public CommonResp<List<DocQueryResp>> all(@Valid DocQueryReq req){
         CommonResp<List<DocQueryResp> > resp = new CommonResp<>();
-        List<DocQueryResp> list=docService.all();
+        List<DocQueryResp> list=docService.all(req);
         resp.setContent(list);
         return resp;
     }
