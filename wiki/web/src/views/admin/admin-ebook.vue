@@ -27,7 +27,7 @@
         </template>
         <template v-slot:category="{text, record}">
           <span>
-            {{  getCategoryName( record.category1Id)  }}/{{  getCategoryName(record.category2Id)  }}
+            {{ getCategoryName(record.category1Id) }}/{{ getCategoryName(record.category2Id) }}
           </span>
         </template>
         <template v-slot:action="{ text, record }">
@@ -113,7 +113,7 @@ export default defineComponent({
       },
       {
         title: '分类',
-        slots: { customRender: 'category'}
+        slots: {customRender: 'category'}
       },
 
       {
@@ -170,6 +170,11 @@ export default defineComponent({
           level1.value = [];
           level1.value = Tool.array2Tree(categorys, 0);
           console.log("树形结构：", level1);
+          //加载完分类后，再加载电子书，否则如果分类树加载很慢，则电子书渲染会报错
+          handleQuery({
+            page: 1,
+            size: pagination.value.pageSize,
+          });
         } else {
           message.error(data.message);
         }
@@ -255,7 +260,7 @@ export default defineComponent({
     const getCategoryName = (cid: number) => {
       let result = "";
       categorys.forEach((item: any) => {
-        if(item.id === cid){
+        if (item.id === cid) {
           result = item.name;
         }
       });
@@ -263,10 +268,7 @@ export default defineComponent({
     };
     onMounted(function () {
       handleQueryCategory();
-      handleQuery({
-        page: 1,
-        size: pagination.value.pageSize,
-      });
+
     });
 
     return {
