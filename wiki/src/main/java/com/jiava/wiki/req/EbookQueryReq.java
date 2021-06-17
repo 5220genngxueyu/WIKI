@@ -21,7 +21,25 @@ public class EbookQueryReq extends PageReq{
     }
     @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
+    @JsonSerialize(using = JsonLongSerializer.class )
+    private Long category2Id;
+
+    public Long getCategory2Id() {
+        return category2Id;
+    }
+
+    public void setCategory2Id(Long category2Id) {
+        this.category2Id = category2Id;
+    }
 
     private String name;
 
+    @Override
+    public String toString() {
+        return "EbookQueryReq{" +
+                "id=" + id +
+                ", category2Id=" + category2Id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

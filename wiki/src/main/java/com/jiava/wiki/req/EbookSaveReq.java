@@ -10,9 +10,10 @@ public class EbookSaveReq {
     private Long id;
     @NotNull(message="【名称】不能为空")
     private String name;
+    @JsonSerialize(using = JsonLongSerializer.class )
     @NotNull(message="选择你的分类！")
     private Long category1Id;
-
+    @JsonSerialize(using = JsonLongSerializer.class )
     private Long category2Id;
 
     private String description;

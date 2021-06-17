@@ -166,7 +166,7 @@ export default defineComponent({
     };
     //删除
     //Long类型对应的前段类型是number
-    const handleDelete = (id: number) => {
+    const handleDelete = (id: string) => {
       axios.delete("/category/delete/"+
          id).then((response) => {
 

@@ -82,7 +82,22 @@ export default defineComponent({
   name: 'Home',
   setup() {
     const ebooks = ref();
+    let category2Id = 0;
     const ebooks1 = reactive({books: []});
+    const handleQuery=()=>{
+      axios.get("/ebook/list?",{
+        params:{
+          page:1,
+          size:1000,
+          category2Id:category2Id
+        }
+      }).then((response) => {
+        const data = response.data;
+        ebooks.value = data.content.list;
+        //ebooks1.books = data.content.list;
+
+      });
+    }
     const handleQueryCategory = () => {
       axios.get("/category/all").then((response) => {
         const data = response.data;
@@ -102,23 +117,15 @@ export default defineComponent({
       {
         isShowWelcome.value=true;
       }else{
+        category2Id = value.key;
         isShowWelcome.value=false;
+        handleQuery();
       }
 
     };
     onMounted(function () {
       handleQueryCategory();
-      axios.get("/ebook/list?",{
-        params:{
-          page:1,
-          size:1000
-        }
-      }).then((response) => {
-        const data = response.data;
-        ebooks.value = data.content.list;
-        //ebooks1.books = data.content.list;
 
-      });
     })
     return {
       isShowWelcome,

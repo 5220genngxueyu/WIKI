@@ -255,9 +255,9 @@ export default defineComponent({
         name: name.value,
       });
     };
-    //这里的cid和category1Id、category2Id后端设置为Long，但应该不会爆精度，所以可以用number接受
+    //会爆精度
     //Js语言这些参数指定都是假的，就算只定了cid:number ，传字符串进来cid就是一个字符串
-    const getCategoryName = (cid: number) => {
+    const getCategoryName = (cid: string) => {
       let result = "";
       categorys.forEach((item: any) => {
         if (item.id === cid) {
