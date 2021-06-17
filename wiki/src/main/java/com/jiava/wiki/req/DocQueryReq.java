@@ -1,9 +1,9 @@
-package com.jiava.wiki.domain;
+package com.jiava.wiki.req;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jiava.wiki.util.JsonLongSerializer;
 
-public class Doc {
+public class DocQueryReq extends PageReq{
     @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
     @JsonSerialize(using = JsonLongSerializer.class )
@@ -18,6 +18,19 @@ public class Doc {
     private Integer viewCount;
 
     private Integer voteCount;
+
+    @Override
+    public String toString() {
+        return "DocQueryReq{" +
+                "id=" + id +
+                ", parent=" + parent +
+                ", ebookId=" + ebookId +
+                ", name='" + name + '\'' +
+                ", sort=" + sort +
+                ", viewCount=" + viewCount +
+                ", voteCount=" + voteCount +
+                '}'+super.toString();
+    }
 
     public Long getId() {
         return id;
@@ -73,22 +86,5 @@ public class Doc {
 
     public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", parent=").append(parent);
-        sb.append(", ebookId=").append(ebookId);
-        sb.append(", name=").append(name);
-        sb.append(", sort=").append(sort);
-        sb.append(", viewCount=").append(viewCount);
-        sb.append(", voteCount=").append(voteCount);
-        sb.append("]");
-        return sb.toString();
     }
 }

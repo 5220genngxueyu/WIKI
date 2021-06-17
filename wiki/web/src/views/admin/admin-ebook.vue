@@ -45,6 +45,11 @@
                 删除
               </a-button>
             </a-popconfirm>
+            <router-link to="/admin/doc">
+              <a-button type="primary">
+                文档管理
+              </a-button>
+            </router-link>
           </a-space>
         </template>
       </a-table>
