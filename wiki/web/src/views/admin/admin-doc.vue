@@ -99,7 +99,7 @@ import {useRoute} from "vue-router";
 export default defineComponent({
   name: 'AdminDoc',
   setup() {
-    const route=useRoute();
+    const route = useRoute();
     const docs = ref();
     const level1 = ref();
     const loading = ref(false);
@@ -108,6 +108,7 @@ export default defineComponent({
     const modalLoading = ref(false);
     const treeSelectData = ref();
     treeSelectData.value = [];
+    let deleteData: Array<string> = [];
     const columns = [
 
       {
@@ -136,8 +137,8 @@ export default defineComponent({
 
       axios.get("/doc/all",
           {
-            params:{
-              ebookId:route.query.ebookId,
+            params: {
+              ebookId: route.query.ebookId,
             }
           }).then((response) => {
         loading.value = false;
@@ -166,11 +167,30 @@ export default defineComponent({
               setDisable(children, children[j].id);
             }
           }
-        }
-        else{
+        } else {
           const children = node.children;
-          if (Tool.isNotEmpty(children)){
-            setDisable(children,id);
+          if (Tool.isNotEmpty(children)) {
+            setDisable(children, id);
+          }
+        }
+      }
+    }
+    const setDelete = (treeSelectData: any, id: any) => {
+
+      for (let i = 0; i < treeSelectData.length; i++) {
+        const node = treeSelectData[i];
+        if (node.id === id) {
+          deleteData.push(node.id);
+          const children = node.children;
+          if (Tool.isNotEmpty(children)) {
+            for (let j = 0; j < children.length; j++) {
+              setDelete(children, children[j].id);
+            }
+          }
+        } else {
+          const children = node.children;
+          if (Tool.isNotEmpty(children)) {
+            setDelete(children, id);
           }
         }
       }
@@ -198,7 +218,7 @@ export default defineComponent({
     const add = () => {
       modalVisible.value = true;
       doc.value = {
-        ebookId:route.query.ebookId
+        ebookId: route.query.ebookId
       };
       treeSelectData.value = Tool.copy(level1.value);
       treeSelectData.value.unshift({id: 0, name: '无'});
@@ -218,8 +238,10 @@ export default defineComponent({
     //删除
     //Long类型对应的前段类型是number
     const handleDelete = (id: string) => {
+      deleteData = [];
+      setDelete(level1.value, id);
       axios.delete("/doc/delete/" +
-          id).then((response) => {
+          deleteData.join(",")).then((response) => {
 
         const data = response.data;
         if (data.success) {
