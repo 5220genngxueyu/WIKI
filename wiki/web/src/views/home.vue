@@ -26,7 +26,13 @@
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
-      <a-list item-layout="vertical" size="large" :grid="{gutter: 20, column: 3}" :data-source="ebooks">
+      <div class="welcome" v-show="isShowWelcome">
+        <h1>
+          欢迎使用斜以知识库
+        </h1>
+      </div>
+<!--        //这是一种互斥的做法-->
+      <a-list  v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{gutter: 20, column: 3}" :data-source="ebooks">
         <template #renderItem="{ item }">
           <a-list-item key="item.name">
             <template #actions>
@@ -57,6 +63,7 @@ import axios from 'axios'
 import { message } from 'ant-design-vue';
 import {Tool} from "@/util/tool";
 
+const isShowWelcome=ref(true);
 const level1 = ref();
 let categorys:any;
 const listData: any = [];
@@ -90,8 +97,14 @@ export default defineComponent({
         }
       });
     };
-    const handleClick=()=>{
-      console.log("menu click")
+    const handleClick=(value:any)=>{
+      if(value.key === 'welcome')
+      {
+        isShowWelcome.value=true;
+      }else{
+        isShowWelcome.value=false;
+      }
+
     };
     onMounted(function () {
       handleQueryCategory();
@@ -108,6 +121,7 @@ export default defineComponent({
       });
     })
     return {
+      isShowWelcome,
       handleClick,
       level1,
       ebooks,
