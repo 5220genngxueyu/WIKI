@@ -90,11 +90,13 @@
 </template>
 <script lang="ts">
 
-import {defineComponent, onMounted, ref} from 'vue';
+import {defineComponent, onMounted, ref, createVNode} from 'vue';
 import axios from 'axios'
 import {message} from 'ant-design-vue';
 import {Tool} from '@/util/tool';
 import {useRoute} from "vue-router";
+import {Modal} from 'ant-design-vue';
+import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
 
 export default defineComponent({
   name: 'AdminDoc',
@@ -109,6 +111,7 @@ export default defineComponent({
     const treeSelectData = ref();
     treeSelectData.value = [];
     let deleteData: Array<string> = [];
+    let deleteName: Array<string> = [];
     const columns = [
 
       {
@@ -181,6 +184,7 @@ export default defineComponent({
         const node = treeSelectData[i];
         if (node.id === id) {
           deleteData.push(node.id);
+          deleteName.push(node.name);
           const children = node.children;
           if (Tool.isNotEmpty(children)) {
             for (let j = 0; j < children.length; j++) {
@@ -239,15 +243,23 @@ export default defineComponent({
     //Long类型对应的前段类型是number
     const handleDelete = (id: string) => {
       deleteData = [];
+      deleteName = [];
       setDelete(level1.value, id);
-      axios.delete("/doc/delete/" +
-          deleteData.join(",")).then((response) => {
+      Modal.confirm({
+        title: '危！！！',
+        icon: createVNode(ExclamationCircleOutlined),
+        content: '真的要删除【'+deleteData.join(",")+'】这一些文件吗?',
+        onOk() {
+          axios.delete("/doc/delete/" +
+              deleteData.join(",")).then((response) => {
 
-        const data = response.data;
-        if (data.success) {
+            const data = response.data;
+            if (data.success) {
 
-          //重新加载列表
-          handleQuery();
+              //重新加载列表
+              handleQuery();
+            }
+          });
         }
       });
     };
