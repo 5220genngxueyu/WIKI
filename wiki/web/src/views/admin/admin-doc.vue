@@ -41,6 +41,7 @@
           </a-space>
         </template>
       </a-table>
+
     </a-layout-content>
   </a-layout>
 
@@ -70,19 +71,8 @@
       <a-form-item label="顺序">
         <a-input v-model:value="doc.sort"/>
       </a-form-item>
-      <a-form-item label="父文档">
-        <a-input v-model:value="doc.parent"/>
-        <a-select
-            v-model:value="doc.parent"
-            ref="select"
-        >
-          <a-select-option value="0">
-            无
-          </a-select-option>
-          <a-select-option v-for="c in level1" :key="c.id" :value="c.id" :disabled="doc.id===c.id">
-            {{ c.name }}
-          </a-select-option>
-        </a-select>
+      <a-form-item label="内容">
+        <div id="content"></div>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -97,7 +87,7 @@ import {Tool} from '@/util/tool';
 import {useRoute} from "vue-router";
 import {Modal} from 'ant-design-vue';
 import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
-
+import E from 'wangeditor'
 export default defineComponent({
   name: 'AdminDoc',
   setup() {
@@ -108,8 +98,12 @@ export default defineComponent({
     const doc = ref();
     const modalVisible = ref(false);
     const modalLoading = ref(false);
+    const editor= new E("#content")
     const treeSelectData = ref();
+
+
     treeSelectData.value = [];
+
     let deleteData: Array<string> = [];
     let deleteName: Array<string> = [];
     const columns = [
@@ -220,10 +214,14 @@ export default defineComponent({
 
     // 新增
     const add = () => {
+
       modalVisible.value = true;
       doc.value = {
         ebookId: route.query.ebookId
       };
+      setTimeout(function () {
+        editor.create();
+      },100);
       treeSelectData.value = Tool.copy(level1.value);
       treeSelectData.value.unshift({id: 0, name: '无'});
     };
@@ -234,7 +232,9 @@ export default defineComponent({
     const edit = (record: any) => {
       modalVisible.value = true;
       doc.value = Tool.copy(record);
-
+      setTimeout(function () {
+        editor.create();
+      },100);
       treeSelectData.value = Tool.copy(level1.value);
       setDisable(treeSelectData.value, record.id);
       treeSelectData.value.unshift({id: 0, name: '无'});
@@ -269,6 +269,7 @@ export default defineComponent({
       handleQuery();
     };
     onMounted(function () {
+
       handleQuery();
     });
 
@@ -282,6 +283,7 @@ export default defineComponent({
       name,
       handleDelete,
       choose,
+      editor,
       doc,
       modalVisible,
       modalLoading,
