@@ -41,6 +41,6 @@
                              type="XMLMAPPER"/>
 
 <!--        <table tableName="ebook"/>-->
-        <table tableName="doc"/>
+        <table tableName="content"/>
     </context>
 </generatorConfiguration>
