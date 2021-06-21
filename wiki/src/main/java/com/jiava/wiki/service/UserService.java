@@ -6,6 +6,8 @@ import com.jiava.wiki.config.WikiApplication;
 import com.jiava.wiki.domain.Ebook;
 import com.jiava.wiki.domain.User;
 import com.jiava.wiki.domain.UserExample;
+import com.jiava.wiki.exception.BusinessException;
+import com.jiava.wiki.exception.BusinessExceptionCode;
 import com.jiava.wiki.mapper.UserMapper;
 import com.jiava.wiki.req.UserQueryReq;
 import com.jiava.wiki.req.UserSaveReq;
@@ -16,6 +18,7 @@ import com.jiava.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
@@ -57,8 +60,14 @@ public class UserService {
         User user = CopyUtil.copy(req, User.class);
         if (ObjectUtils.isEmpty(req.getId())) {
             //新增
+            if(selectByLoginName(user.getLoginName())==null){
             user.setId(snowFlake.nextId());
             userMapper.insert(user);
+            }
+            else{
+                //用户名已存在
+                throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+            }
         } else {
             //更新
             userMapper.updateByPrimaryKey(user);
@@ -68,5 +77,16 @@ public class UserService {
     //删除
     public void delete(Long id) {
         userMapper.deleteByPrimaryKey(id);
+    }
+    public User selectByLoginName(String LoginName){
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andLoginNameEqualTo(LoginName);
+        List<User> userList=userMapper.selectByExample(userExample);
+        if(CollectionUtils.isEmpty(userList)){
+            return  null;
+        }else {
+            return userList.get(0);
+        }
     }
 }
