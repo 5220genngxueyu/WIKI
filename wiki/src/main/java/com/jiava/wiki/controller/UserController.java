@@ -64,7 +64,7 @@ public class UserController {
     @GetMapping("/logout/{token}")
     public CommonResp logout(@PathVariable Long token){
         CommonResp resp = new CommonResp<>();
-        redisTemplate.delete(token);
+        redisTemplate.delete(token.toString());
         return resp;
     }
     @PostMapping("/login")
@@ -75,7 +75,7 @@ public class UserController {
         Long token=snowFlake.nextId();
         userLoginResp.setToken(token);
         //对象放入Redis需要序列化，要么就转化成JSON字符串
-        redisTemplate.opsForValue().set(token, JSONObject.toJSONString(userLoginResp),3600*24, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(token.toString(), JSONObject.toJSONString(userLoginResp),3600*24, TimeUnit.SECONDS);
         resp.setContent(userLoginResp);
         return resp;
     }
