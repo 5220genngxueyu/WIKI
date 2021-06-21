@@ -16,12 +16,14 @@
             </a-space>
           </p>
           <a-table
+              v-if="level1.length>0"
               :columns="columns"
               :row-key="record => record.id"
               :data-source="level1"
               :loading="loading"
               :pagination="false"
               size="small"
+              :defaultExpandAllRow="true"
           >
             <template #name="{ text,record }">
               {{ record.sort }} {{ text }}
@@ -110,6 +112,7 @@ export default defineComponent({
     const route = useRoute();
     const docs = ref();
     const level1 = ref();
+    level1.value=[];
     const loading = ref(false);
     const doc = ref();
     const modalVisible = ref(false);
@@ -274,7 +277,6 @@ export default defineComponent({
       handleQuery();
     };
     onMounted(function () {
-      console.log("进来了")
       handleQuery();
       editor.create();
     });
