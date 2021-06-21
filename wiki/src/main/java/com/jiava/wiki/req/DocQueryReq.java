@@ -13,6 +13,8 @@ public class DocQueryReq extends PageReq{
 
     private String name;
 
+
+
     private Integer sort;
 
     private Integer viewCount;

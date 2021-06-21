@@ -18,22 +18,33 @@ public class DocSaveReq extends PageReq{
     private String name;
     @NotNull(message="【顺序】不能为空")
     private Integer sort;
+    @NotNull(message="【内容】不能为空")
+    private String content;
 
     private Integer viewCount;
 
     private Integer voteCount;
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public String toString() {
-        return "DocQueryReq{" +
+        return "DocSaveReq{" +
                 "id=" + id +
                 ", parent=" + parent +
                 ", ebookId=" + ebookId +
                 ", name='" + name + '\'' +
                 ", sort=" + sort +
+                ", content='" + content + '\'' +
                 ", viewCount=" + viewCount +
                 ", voteCount=" + voteCount +
-                '}'+super.toString();
+                '}';
     }
 
     public Long getId() {

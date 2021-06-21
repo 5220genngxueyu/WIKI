@@ -209,6 +209,7 @@ export default defineComponent({
 
     const handleSave = () => {
       modalLoading.value = true;
+      doc.value.content=editor.txt.html();
       axios.post("/doc/save",
           doc.value).then((response) => {
         modalLoading.value = false;
