@@ -1,6 +1,7 @@
 <template>
   <a-layout>
     <a-layout-content :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
+      <h3 v-if="level1.length === 0">对不起，找不到相关文档！</h3>
       <a-row>
         <a-col :span="6">
           <a-tree
@@ -9,7 +10,7 @@
               @select="onSelect"
               :replaceFields="{title: 'name', key: 'id', value: 'id'}"
               :defaultExpandAll="true"
-
+              :defaultSelectedKeys="defaultSelectedKeys"
           >
           </a-tree>
         </a-col>
@@ -33,6 +34,9 @@ export default defineComponent({
     const route = useRoute();
     const docs = ref();
     const html = ref()
+    const defaultSelectedKeys = ref();
+    defaultSelectedKeys.value = [];
+
     /**
      * 一级文档树，children属性就是二级文档
      * [{
@@ -83,7 +87,10 @@ export default defineComponent({
 
           level1.value = [];
           level1.value = Tool.array2Tree(docs.value, 0);
-
+          if (Tool.isNotEmpty(level1)) {
+            defaultSelectedKeys.value = [level1.value[0].id];
+            handleQueryContent(level1.value[0].id);
+          }
         } else {
           message.error(data.message);
         }
@@ -99,6 +106,7 @@ export default defineComponent({
       level1,
       html,
       onSelect,
+      defaultSelectedKeys,
     }
   }
 });
