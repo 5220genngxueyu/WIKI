@@ -7,6 +7,17 @@ public class UserLoginResp {
     @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
 
+    public Long getToken() {
+        return token;
+    }
+
+    public void setToken(Long token) {
+        this.token = token;
+    }
+
+    @JsonSerialize(using = JsonLongSerializer.class )
+    private Long token;
+
     private String loginName;
 
     private String name;
@@ -37,17 +48,13 @@ public class UserLoginResp {
         this.name = name;
     }
 
-
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", loginName=").append(loginName);
-        sb.append(", name=").append(name);
-        sb.append("]");
-        return sb.toString();
+        return "UserLoginResp{" +
+                "id=" + id +
+                ", token=" + token +
+                ", loginName='" + loginName + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
