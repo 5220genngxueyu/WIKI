@@ -164,7 +164,20 @@ export default defineComponent({
         }
       });
     };
+    /**
+     * 内容查询
+     **/
+    const handleContent = () => {
+      axios.get("/doc/find-content/"+doc.value.id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          editor.txt.html(data.content);
 
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
     const setDisable = (treeSelectData: any, id: any) => {
 
       for (let i = 0; i < treeSelectData.length; i++) {
@@ -244,6 +257,7 @@ export default defineComponent({
     const edit = (record: any) => {
       modalVisible.value = true;
       doc.value = Tool.copy(record);
+      handleContent();
       treeSelectData.value = Tool.copy(level1.value);
       setDisable(treeSelectData.value, record.id);
       treeSelectData.value.unshift({id: 0, name: '无'});

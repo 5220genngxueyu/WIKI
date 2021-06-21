@@ -86,6 +86,13 @@ public class DocService {
         }
     }
 
+    public String findContent(Long id) {
+        //这里这个select可以找到全部的大小字段
+        Content content = contentMapper.selectByPrimaryKey(id);
+        if (content.getContent() == null) return null;
+        return content.getContent();
+    }
+
     //删除
     public void delete(Long id) {
         docMapper.deleteByPrimaryKey(id);
