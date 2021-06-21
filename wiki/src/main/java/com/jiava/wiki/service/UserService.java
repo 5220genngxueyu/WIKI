@@ -70,6 +70,7 @@ public class UserService {
             }
         } else {
             user.setLoginName(null);
+            user.setPassword(null);
             //更新,用updateByPrimaryKeySelective，只更新user里原来就不为空的属性
             //这样就无论如何都改不了用户名了
             userMapper.updateByPrimaryKeySelective(user);
