@@ -69,8 +69,10 @@ public class UserService {
                 throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
             }
         } else {
-            //更新
-            userMapper.updateByPrimaryKey(user);
+            user.setLoginName(null);
+            //更新,用updateByPrimaryKeySelective，只更新user里原来就不为空的属性
+            //这样就无论如何都改不了用户名了
+            userMapper.updateByPrimaryKeySelective(user);
         }
     }
 
