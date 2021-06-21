@@ -118,11 +118,12 @@ export default defineComponent({
     const modalVisible = ref(false);
     const modalLoading = ref(false);
     const editor = new E("#content")
-    const treeSelectData = ref();
+
     editor.config.zIndex=0;
     doc.value = {
       ebookId: route.query.ebookId
     };
+    const treeSelectData = ref();
     treeSelectData.value = [];
 
     let deleteData: Array<string> = [];
@@ -159,6 +160,9 @@ export default defineComponent({
           level1.value = [];
           level1.value = Tool.array2Tree(docs.value, 0);
           console.log("树形结构：", level1);
+          //父文档下拉框初始化，相当于点击新增
+          treeSelectData.value = Tool.copy(level1.value);
+          treeSelectData.value.unshift({id: 0, name: '无'});
         } else {
           message.error(data.message);
         }
