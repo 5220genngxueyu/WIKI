@@ -1,6 +1,7 @@
 package com.jiava.wiki.controller;
 
 import com.jiava.wiki.req.UserQueryReq;
+import com.jiava.wiki.req.UserResetReq;
 import com.jiava.wiki.req.UserSaveReq;
 import com.jiava.wiki.resp.CommonResp;
 import com.jiava.wiki.resp.UserQueryResp;
@@ -33,6 +34,12 @@ public class UserController {
         req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         CommonResp resp = new CommonResp<>();
         userService.save(req);
+        return resp;
+    }@PostMapping("/reset")
+    public CommonResp reset(@Valid @RequestBody UserResetReq req){
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp resp = new CommonResp<>();
+        userService.reset(req);
         return resp;
     }
     @DeleteMapping("/delete/{id}")

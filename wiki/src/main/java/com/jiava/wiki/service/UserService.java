@@ -10,6 +10,7 @@ import com.jiava.wiki.exception.BusinessException;
 import com.jiava.wiki.exception.BusinessExceptionCode;
 import com.jiava.wiki.mapper.UserMapper;
 import com.jiava.wiki.req.UserQueryReq;
+import com.jiava.wiki.req.UserResetReq;
 import com.jiava.wiki.req.UserSaveReq;
 import com.jiava.wiki.resp.UserQueryResp;
 import com.jiava.wiki.resp.PageResp;
@@ -75,6 +76,10 @@ public class UserService {
             //这样就无论如何都改不了用户名了
             userMapper.updateByPrimaryKeySelective(user);
         }
+    }
+    public void reset(UserResetReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
     //删除
