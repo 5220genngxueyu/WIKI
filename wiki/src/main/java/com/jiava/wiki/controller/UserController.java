@@ -1,9 +1,11 @@
 package com.jiava.wiki.controller;
 
+import com.jiava.wiki.req.UserLoginReq;
 import com.jiava.wiki.req.UserQueryReq;
 import com.jiava.wiki.req.UserResetReq;
 import com.jiava.wiki.req.UserSaveReq;
 import com.jiava.wiki.resp.CommonResp;
+import com.jiava.wiki.resp.UserLoginResp;
 import com.jiava.wiki.resp.UserQueryResp;
 import com.jiava.wiki.resp.PageResp;
 import com.jiava.wiki.service.UserService;
@@ -35,7 +37,8 @@ public class UserController {
         CommonResp resp = new CommonResp<>();
         userService.save(req);
         return resp;
-    }@PostMapping("/reset")
+    }
+    @PostMapping("/reset")
     public CommonResp reset(@Valid @RequestBody UserResetReq req){
         req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         CommonResp resp = new CommonResp<>();
@@ -46,6 +49,14 @@ public class UserController {
     public CommonResp delete(@PathVariable Long id){
         CommonResp resp = new CommonResp<>();
         userService.delete(id);
+        return resp;
+    }
+    @PostMapping("/login")
+    public CommonResp<UserLoginResp> reset(@Valid @RequestBody UserLoginReq req){
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp<UserLoginResp> resp = new CommonResp<>();
+        UserLoginResp userLoginResp=userService.login(req);
+        resp.setContent(userLoginResp);
         return resp;
     }
 }
