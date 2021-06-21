@@ -14,13 +14,14 @@
           </a-tree>
         </a-col>
         <a-col :span="18">
+          <div class="wangeditor" :innerHTML="html"></div>
         </a-col>
       </a-row>
     </a-layout-content>
   </a-layout>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref, createVNode } from 'vue';
+import {defineComponent, onMounted, ref, createVNode} from 'vue';
 import axios from 'axios';
 import {message} from 'ant-design-vue';
 import {Tool} from "@/util/tool";
@@ -31,7 +32,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const docs = ref();
-
+    const html = ref()
     /**
      * 一级文档树，children属性就是二级文档
      * [{
@@ -49,13 +50,28 @@ export default defineComponent({
     /**
      * 内容查询
      **/
-
-
+    const handleQueryContent = (id: number) => {
+      axios.get("/doc/find-content/" + id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          html.value = data.content;
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
+    const onSelect = (selectedKeys: any, info: any) => {
+      console.log('selected', selectedKeys, info);
+      if (Tool.isNotEmpty(selectedKeys)) {
+        // 加载内容
+        handleQueryContent(selectedKeys[0]);
+      }
+    };
     /**
      * 数据查询
      **/
     const handleQuery = () => {
-      axios.get("/doc/all" ,
+      axios.get("/doc/all",
           {
             params: {
               ebookId: route.query.ebookId,
@@ -81,7 +97,8 @@ export default defineComponent({
 
     return {
       level1,
-
+      html,
+      onSelect,
     }
   }
 });
@@ -134,7 +151,6 @@ export default defineComponent({
 .wangeditor ul, ol {
   margin: 10px 0 10px 20px;
 }
-
 /* 和antdv p冲突，覆盖掉 */
 .wangeditor blockquote p {
   font-family:"YouYuan";
@@ -142,22 +158,5 @@ export default defineComponent({
   font-size: 16px !important;
   font-weight:600;
 }
-
-/* 点赞 */
-.vote-div {
-  padding: 15px;
-  text-align: center;
-}
-
-/* 图片自适应 */
-.wangeditor img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* 视频自适应 */
-.wangeditor iframe {
-  width: 100%;
-  height: 400px;
-}
 </style>
+
