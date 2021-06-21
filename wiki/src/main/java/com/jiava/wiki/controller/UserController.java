@@ -61,6 +61,12 @@ public class UserController {
         userService.delete(id);
         return resp;
     }
+    @GetMapping("/logout/{token}")
+    public CommonResp logout(@PathVariable Long token){
+        CommonResp resp = new CommonResp<>();
+        redisTemplate.delete(token);
+        return resp;
+    }
     @PostMapping("/login")
     public CommonResp<UserLoginResp> reset(@Valid @RequestBody UserLoginReq req){
         req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));

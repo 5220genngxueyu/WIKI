@@ -1,6 +1,6 @@
 <template>
   <a-layout-header class="header">
-    <div class="logo" />
+    <div class="logo"/>
     <a-menu
         theme="dark"
         mode="horizontal"
@@ -22,10 +22,21 @@
       <a-menu-item key="/about">
         <router-link to="/about">关于我们</router-link>
       </a-menu-item>
+
+      <a-popconfirm
+          title="确认退出登录?"
+          ok-text="是"
+          cancel-text="否"
+          @confirm="logout()"
+      >
+        <a class="login-menu" v-show="user.id">
+          <span>退出登录</span>
+        </a>
+      </a-popconfirm>
       <a class="login-menu" v-show="!!user.id">
-        <span>您好：{{user.name}}</span>
+        <span>您好：{{ user.name }}</span>
       </a>
-      <a class="login-menu"  v-show="!user.id" @click="showLoginModal" >
+      <a class="login-menu" v-show="!user.id" @click="showLoginModal">
         <span>登录</span>
       </a>
     </a-menu>
@@ -37,10 +48,10 @@
     >
       <a-form :model="loginUser" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
         <a-form-item label="登录名">
-          <a-input v-model:value="loginUser.loginName" />
+          <a-input v-model:value="loginUser.loginName"/>
         </a-form-item>
         <a-form-item label="密码">
-          <a-input v-model:value="loginUser.password" type="password" />
+          <a-input v-model:value="loginUser.password" type="password"/>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -48,16 +59,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+import {defineComponent, ref, computed} from 'vue';
 import axios from 'axios';
-import { message } from 'ant-design-vue';
+import {message} from 'ant-design-vue';
 import store from "@/store";
 
 declare let hexMd5: any;
 declare let KEY: any;
 export default defineComponent({
   name: 'the-header',
-  setup(){
+  setup() {
     //登录后保存
     const user = computed(() => store.state.user);
     //用来登录
@@ -87,15 +98,45 @@ export default defineComponent({
         }
       });
     };
-
+// 退出登录
+    const logout = () => {
+      console.log("退出登录开始");
+      axios.get('/user/logout/' + user.value.token).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          message.success("退出登录成功！");
+          store.commit("setUser", {});
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
     return {
       loginModalVisible,
       loginModalLoading,
       showLoginModal,
       loginUser,
       login,
-user,
+      logout,
+      user,
     }
   }
 });
 </script>
+
+<style>
+.logo {
+  width: 120px;
+  height: 31px;
+  /*background: rgba(255, 255, 255, 0.2);*/
+  /*margin: 16px 28px 16px 0;*/
+  float: left;
+  color: white;
+  font-size: 18px;
+}
+.login-menu {
+  float: right;
+  color: white;
+  padding-left: 10px;
+}
+</style>
