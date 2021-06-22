@@ -6,6 +6,8 @@ import com.jiava.wiki.config.WikiApplication;
 import com.jiava.wiki.domain.Content;
 import com.jiava.wiki.domain.Doc;
 import com.jiava.wiki.domain.DocExample;
+import com.jiava.wiki.exception.BusinessException;
+import com.jiava.wiki.exception.BusinessExceptionCode;
 import com.jiava.wiki.mapper.ContentMapper;
 import com.jiava.wiki.mapper.DocMapper;
 import com.jiava.wiki.mapper.DocMapperCust;
@@ -14,6 +16,8 @@ import com.jiava.wiki.req.DocSaveReq;
 import com.jiava.wiki.resp.DocQueryResp;
 import com.jiava.wiki.resp.PageResp;
 import com.jiava.wiki.util.CopyUtil;
+import com.jiava.wiki.util.RedisUtil;
+import com.jiava.wiki.util.RequestContext;
 import com.jiava.wiki.util.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +38,8 @@ public class DocService {
     private SnowFlake snowFlake;
     @Resource
     private DocMapperCust docMapperCust;
+    @Resource
+    private RedisUtil redisUtil;
 
     public PageResp<DocQueryResp> list(DocQueryReq req) {
 
@@ -105,7 +111,14 @@ public class DocService {
     }
     //点赞
     public void vote(Long id) {
-        docMapperCust.increaseVoteCount(id);
+        String key= RequestContext.getRemoteAddr();
+        if(redisUtil.validateRepeat("DOC_VOTE_"+id+"_"+key,3600*24)){
+            docMapperCust.increaseVoteCount(id);
+        }
+        else{
+            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+        }
+
     }
 
     public void delete(List<String> ids) {
