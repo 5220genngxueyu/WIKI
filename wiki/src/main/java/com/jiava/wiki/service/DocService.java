@@ -8,6 +8,7 @@ import com.jiava.wiki.domain.Doc;
 import com.jiava.wiki.domain.DocExample;
 import com.jiava.wiki.mapper.ContentMapper;
 import com.jiava.wiki.mapper.DocMapper;
+import com.jiava.wiki.mapper.DocMapperCust;
 import com.jiava.wiki.req.DocQueryReq;
 import com.jiava.wiki.req.DocSaveReq;
 import com.jiava.wiki.resp.DocQueryResp;
@@ -31,6 +32,8 @@ public class DocService {
     private DocMapper docMapper;
     @Resource
     private SnowFlake snowFlake;
+    @Resource
+    private DocMapperCust docMapperCust;
 
     public PageResp<DocQueryResp> list(DocQueryReq req) {
 
@@ -72,6 +75,8 @@ public class DocService {
         if (ObjectUtils.isEmpty(req.getId())) {
             //新增
             doc.setId(snowFlake.nextId());
+            doc.setViewCount(0);
+            doc.setVoteCount(0);
             docMapper.insert(doc);
             content.setId(doc.getId());
             contentMapper.insert(content);
@@ -89,7 +94,8 @@ public class DocService {
     public String findContent(Long id) {
         //这里这个select可以找到全部的大小字段
         Content content = contentMapper.selectByPrimaryKey(id);
-        if (content== null) return null;
+        docMapperCust.increaseViewCount(id);
+        if (ObjectUtils.isEmpty(content)) return "";
         return content.getContent();
     }
 
