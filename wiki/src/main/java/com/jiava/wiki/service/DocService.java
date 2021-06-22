@@ -103,6 +103,10 @@ public class DocService {
     public void delete(Long id) {
         docMapper.deleteByPrimaryKey(id);
     }
+    //点赞
+    public void vote(Long id) {
+        docMapperCust.increaseVoteCount(id);
+    }
 
     public void delete(List<String> ids) {
         DocExample docExample = new DocExample();

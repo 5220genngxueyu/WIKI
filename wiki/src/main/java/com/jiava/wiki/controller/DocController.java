@@ -20,31 +20,40 @@ public class DocController {
     private DocService docService;
 
     @GetMapping("/all")
-    public CommonResp<List<DocQueryResp>> all(@Valid DocQueryReq req){
-        CommonResp<List<DocQueryResp> > resp = new CommonResp<>();
-        List<DocQueryResp> list=docService.all(req);
+    public CommonResp<List<DocQueryResp>> all(@Valid DocQueryReq req) {
+        CommonResp<List<DocQueryResp>> resp = new CommonResp<>();
+        List<DocQueryResp> list = docService.all(req);
         resp.setContent(list);
         return resp;
     }
+
     @GetMapping("/find-content/{id}")
-    public CommonResp<String> findContent(@PathVariable Long id){
+    public CommonResp<String> findContent(@PathVariable Long id) {
         CommonResp<String> resp = new CommonResp<>();
-        String string=docService.findContent(id);
+        String string = docService.findContent(id);
         resp.setContent(string);
         return resp;
     }
 
+    @GetMapping("/vote/{id}")
+    public CommonResp vote(@PathVariable Long id) {
+        CommonResp resp = new CommonResp<>();
+        docService.vote(id);
+        return resp;
+    }
+
     @PostMapping("/save")
-    public CommonResp save(@Valid @RequestBody DocSaveReq req){
+    public CommonResp save(@Valid @RequestBody DocSaveReq req) {
         CommonResp resp = new CommonResp<>();
         docService.save(req);
         return resp;
     }
+
     @DeleteMapping("/delete/{idStr}")
-    public CommonResp delete(@PathVariable String idStr){
+    public CommonResp delete(@PathVariable String idStr) {
         CommonResp resp = new CommonResp<>();
 
-        List<String> ids= Arrays.asList(idStr.split(","));
+        List<String> ids = Arrays.asList(idStr.split(","));
         docService.delete(ids);
         return resp;
     }
