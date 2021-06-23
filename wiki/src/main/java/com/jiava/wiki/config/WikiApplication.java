@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 //下面这个注解只是会扫描它所在的包下的子包，其他的就访问不到了
 //下面如果要访问其他包，要加@ComponentScan
@@ -14,6 +15,7 @@ import org.springframework.core.env.Environment;
 @ComponentScan("com.jiava")
 @MapperScan("com.jiava.wiki.mapper")
 @SpringBootApplication
+@EnableScheduling
 public class WikiApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(WikiApplication.class);
