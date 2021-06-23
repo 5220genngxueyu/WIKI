@@ -3,6 +3,7 @@ package com.jiava.wiki.aspect;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.PropertyPreFilters;
 import com.jiava.wiki.util.RequestContext;
+import com.jiava.wiki.util.SnowFlake;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -29,12 +30,16 @@ public class LogAspect {
 
     private final static Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
+    @Resource
+    SnowFlake snowFlake;
     /** 定义一个切点 */
     @Pointcut("execution(public * com.jiava.*.controller..*Controller.*(..))")
     public void controllerPointcut() {}
 
     @Before("controllerPointcut()")
     public void doBefore(JoinPoint joinPoint) throws Throwable {
+//增加日志流水号
+        MDC.put("LOG_ID",String.valueOf(snowFlake.nextId()));
 
         // 开始打印请求日志
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
