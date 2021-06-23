@@ -22,7 +22,10 @@
      */
     @Scheduled(cron = "5/30 * * * * ?")
     public void cron() {
+        LOG.info("更新电子书下的文档数据开始");
+        long start = System.currentTimeMillis();
         service.updateEbookInfo();
+        LOG.info("更新结束，耗时"+(System.currentTimeMillis()-start));
     }
 
  }
