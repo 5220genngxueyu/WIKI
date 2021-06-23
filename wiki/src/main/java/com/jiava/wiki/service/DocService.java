@@ -127,4 +127,7 @@ public class DocService {
         criteria.andIdIn(ids);
         docMapper.deleteByExample(docExample);
     }
+    public void updateEbookInfo(){
+        docMapperCust.updateCount();
+    }
 }
