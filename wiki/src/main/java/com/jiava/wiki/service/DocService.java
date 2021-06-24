@@ -19,6 +19,7 @@ import com.jiava.wiki.util.CopyUtil;
 import com.jiava.wiki.util.RedisUtil;
 import com.jiava.wiki.util.RequestContext;
 import com.jiava.wiki.util.SnowFlake;
+import com.jiava.wiki.websocket.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,8 @@ public class DocService {
     private DocMapperCust docMapperCust;
     @Resource
     private RedisUtil redisUtil;
-
+     @Resource
+     private WebSocketServer webSocketServer;
     public PageResp<DocQueryResp> list(DocQueryReq req) {
 
         DocExample docExample = new DocExample();
@@ -118,7 +120,8 @@ public class DocService {
         else{
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
-
+        Doc doc=docMapper.selectByPrimaryKey(id);
+        webSocketServer.sendInfo("【"+doc.getName()+"】被点赞");
     }
 
     public void delete(List<String> ids) {
@@ -130,4 +133,5 @@ public class DocService {
     public void updateEbookInfo(){
         docMapperCust.updateCount();
     }
+
 }
