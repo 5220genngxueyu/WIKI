@@ -20,6 +20,8 @@ import com.jiava.wiki.util.RedisUtil;
 import com.jiava.wiki.util.RequestContext;
 import com.jiava.wiki.util.SnowFlake;
 import com.jiava.wiki.websocket.WebSocketServer;
+import org.apache.rocketmq.spring.autoconfigure.RocketMQAutoConfiguration;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -43,8 +45,11 @@ public class DocService {
     private DocMapperCust docMapperCust;
     @Resource
     private RedisUtil redisUtil;
-     @Resource
-     private WsService wsService;
+    @Resource
+    private WsService wsService;
+//    @Resource
+//    private RocketMQTemplate rocketMQTemplate;
+
     public PageResp<DocQueryResp> list(DocQueryReq req) {
 
         DocExample docExample = new DocExample();
@@ -115,17 +120,18 @@ public class DocService {
     public void delete(Long id) {
         docMapper.deleteByPrimaryKey(id);
     }
+
     //点赞
     public void vote(Long id) {
-        String key= RequestContext.getRemoteAddr();
-        if(redisUtil.validateRepeat("DOC_VOTE_"+id+"_"+key,3600*24)){
+        String key = RequestContext.getRemoteAddr();
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + key, 5)) {
             docMapperCust.increaseVoteCount(id);
-        }
-        else{
+        } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
-        Doc doc=docMapper.selectByPrimaryKey(id);
-        wsService.sendInfo("【"+doc.getName()+"】被点赞", MDC.get("LOG_ID"));
+        Doc doc = docMapper.selectByPrimaryKey(id);
+         wsService.sendInfo("【" + doc.getName() + "】被点赞", MDC.get("LOG_ID"));
+      //  rocketMQTemplate.convertAndSend("VOTE_TOPIC","【" + doc.getName() + "】被点赞");
     }
 
     public void delete(List<String> ids) {
@@ -134,7 +140,8 @@ public class DocService {
         criteria.andIdIn(ids);
         docMapper.deleteByExample(docExample);
     }
-    public void updateEbookInfo(){
+
+    public void updateEbookInfo() {
         docMapperCust.updateCount();
     }
 
