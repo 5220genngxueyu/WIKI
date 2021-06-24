@@ -54,6 +54,7 @@ export class Tool {
   }
 
   /**
+   * 这是这一节新增的
    * 随机生成[len]长度的[radix]进制数
    * @param len
    * @param radix 默认62
