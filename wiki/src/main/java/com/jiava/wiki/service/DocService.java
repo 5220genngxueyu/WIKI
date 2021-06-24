@@ -22,6 +22,7 @@ import com.jiava.wiki.util.SnowFlake;
 import com.jiava.wiki.websocket.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -42,7 +43,7 @@ public class DocService {
     @Resource
     private RedisUtil redisUtil;
      @Resource
-     private WebSocketServer webSocketServer;
+     private WsService wsService;
     public PageResp<DocQueryResp> list(DocQueryReq req) {
 
         DocExample docExample = new DocExample();
@@ -121,7 +122,7 @@ public class DocService {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
         Doc doc=docMapper.selectByPrimaryKey(id);
-        webSocketServer.sendInfo("【"+doc.getName()+"】被点赞");
+        wsService.sendInfo("【"+doc.getName()+"】被点赞", MDC.get("LOG_ID"));
     }
 
     public void delete(List<String> ids) {
