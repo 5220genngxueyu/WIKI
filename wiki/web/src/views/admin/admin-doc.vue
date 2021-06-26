@@ -121,6 +121,7 @@ export default defineComponent({
     const docs = ref();
     const level1 = ref();
     level1.value=[];
+
     const loading = ref(false);
     const doc = ref();
     const modalVisible = ref(false);
@@ -169,7 +170,8 @@ export default defineComponent({
           level1.value = Tool.array2Tree(docs.value, 0);
           console.log("树形结构：", level1);
           //父文档下拉框初始化，相当于点击新增
-          treeSelectData.value = Tool.copy(level1.value);
+          //避免空指针异常
+          treeSelectData.value = Tool.copy(level1.value)|| [];
           treeSelectData.value.unshift({id: 0, name: '无'});
         } else {
           message.error(data.message);
@@ -258,7 +260,7 @@ export default defineComponent({
         ebookId: route.query.ebookId
       };
 
-      treeSelectData.value = Tool.copy(level1.value);
+      treeSelectData.value = Tool.copy(level1.value)|| [];
       treeSelectData.value.unshift({id: 0, name: '无'});
     };
 

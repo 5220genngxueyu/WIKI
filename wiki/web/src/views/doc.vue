@@ -189,17 +189,31 @@ export default defineComponent({
 .wangeditor ul, ol {
   margin: 10px 0 10px 20px;
 }
-/* 点赞 */
-.vote-div {
-  padding: 15px;
-  text-align: center;
-}
+
 /* 和antdv p冲突，覆盖掉 */
 .wangeditor blockquote p {
   font-family:"YouYuan";
   margin: 20px 10px !important;
   font-size: 16px !important;
   font-weight:600;
+}
+
+/* 点赞 */
+.vote-div {
+  padding: 15px;
+  text-align: center;
+}
+
+/* 图片自适应 */
+.wangeditor img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 视频自适应 */
+.wangeditor iframe {
+  width: 100%;
+  height: 400px;
 }
 </style>
 
