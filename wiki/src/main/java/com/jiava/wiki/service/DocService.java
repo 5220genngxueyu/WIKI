@@ -19,9 +19,6 @@ import com.jiava.wiki.util.CopyUtil;
 import com.jiava.wiki.util.RedisUtil;
 import com.jiava.wiki.util.RequestContext;
 import com.jiava.wiki.util.SnowFlake;
-import com.jiava.wiki.websocket.WebSocketServer;
-import org.apache.rocketmq.spring.autoconfigure.RocketMQAutoConfiguration;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -143,6 +140,10 @@ public class DocService {
 
     public void updateEbookInfo() {
         docMapperCust.updateCount();
+    }
+
+    public void dailyCount() {
+        docMapperCust.dailyCount();
     }
 
 }
