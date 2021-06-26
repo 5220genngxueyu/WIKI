@@ -142,8 +142,6 @@ public class DocService {
         docMapperCust.updateCount();
     }
 
-    public void dailyCount() {
-        docMapperCust.dailyCount();
-    }
+
 
 }

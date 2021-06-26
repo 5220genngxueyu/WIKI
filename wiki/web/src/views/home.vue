@@ -27,9 +27,7 @@
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       <div class="welcome" v-show="isShowWelcome">
-        <h1>
-          欢迎使用斜以知识库
-        </h1>
+        <the-welcome></the-welcome>
       </div>
 <!--        //这是一种互斥的做法-->
       <a-list  v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{gutter: 20, column: 3}" :data-source="ebooks">
@@ -72,6 +70,9 @@ import {defineComponent, onMounted, ref, reactive, toRef} from 'vue';
 import axios from 'axios'
 import { message } from 'ant-design-vue';
 import {Tool} from "@/util/tool";
+import TheWelcome from '@/components/the-welcome.vue';
+import TheHeader from "@/components/the-header.vue";
+import TheFooter from "@/components/the-footer.vue";
 
 const isShowWelcome=ref(true);
 const level1 = ref();
@@ -90,6 +91,9 @@ for (let i = 0; i < 23; i++) {
 }
 export default defineComponent({
   name: 'Home',
+  components: {
+    TheWelcome
+  },
   setup() {
     const ebooks = ref();
     let category2Id = 0;

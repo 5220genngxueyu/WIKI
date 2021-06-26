@@ -1,6 +1,7 @@
  package com.jiava.wiki.job;
 
  import com.jiava.wiki.service.DocService;
+ import com.jiava.wiki.service.EbookSnapshotService;
  import com.jiava.wiki.util.SnowFlake;
  import org.slf4j.Logger;
  import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@
     private static final Logger LOG = LoggerFactory.getLogger(DailyJob.class);
 
     @Autowired
-    private DocService service;
+    private EbookSnapshotService service;
     @Resource
     private SnowFlake snowFlake;
     /**
