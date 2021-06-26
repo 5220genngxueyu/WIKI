@@ -101,3 +101,14 @@ create table `user`(
                           unique key `login_name_unique` (`login_name`)
 )engine = innodb default charset =utf8mb4 comment ='用户';
 insert into  `user` (id,`login_name`,`name`,`password`) values (1,'test','测试','test')
+
+###
+select t1.`date`               as `date`,
+       sum(t1.view_count)    as viewCount,
+       sum(t1.vote_count)    as voteCount,
+       sum(t1.view_increase) as viewIncrease,
+       sum(t1.vote_increase) as voteIncrease
+from ebook_snapshot t1
+where t1.`date` >= date_sub(curdate(), interval 1 day)
+group by t1.`date`
+order by t1.`date` asc

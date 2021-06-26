@@ -1,66 +1,74 @@
 <template>
   <a-layout style="padding: 24px 0; background: #fff">
-    <a-layout-sider width="200" style="background: #fff">
+    <a-row>
+      <a-col :span="6">
+        <a-layout-sider width="200" style="background: #fff">
 
-      <a-menu
-          mode="inline"
-          :style="{height: '100%', borderRight: 0}"
-          @click="handleClick"
-      >
-        <a-menu-item key="welcome">
-          <router-link :to="'/'">
-            <MailOutlined />
-            <span>欢迎</span>
-          </router-link>
-        </a-menu-item>
-        <a-sub-menu v-for="item in level1" :key="item.id">
-          <template v-slot:title>
-            <span><user-outlined />{{item.name}}</span>
-          </template>
-          <a-menu-item v-for="child in item.children" :key="child.id">
-            <MailOutlined /><span>{{child.name}}</span>
-          </a-menu-item>
-        </a-sub-menu>
-      </a-menu>
-    </a-layout-sider>
-    <a-layout-content
-        :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
-    >
-      <div class="welcome" v-show="isShowWelcome">
-        <the-welcome></the-welcome>
-      </div>
-<!--        //这是一种互斥的做法-->
-      <a-list  v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{gutter: 20, column: 3}" :data-source="ebooks">
-        <template #renderItem="{ item }">
-          <a-list-item key="item.name">
-            <template #actions>
-              <span >
+          <a-menu
+              mode="inline"
+              :style="{height: '100%', borderRight: 0}"
+              @click="handleClick"
+          >
+            <a-menu-item key="welcome">
+              <router-link :to="'/'">
+                <MailOutlined/>
+                <span>欢迎</span>
+              </router-link>
+            </a-menu-item>
+            <a-sub-menu v-for="item in level1" :key="item.id">
+              <template v-slot:title>
+                <span><user-outlined/>{{ item.name }}</span>
+              </template>
+              <a-menu-item v-for="child in item.children" :key="child.id">
+                <MailOutlined/>
+                <span>{{ child.name }}</span>
+              </a-menu-item>
+            </a-sub-menu>
+          </a-menu>
+        </a-layout-sider>
+      </a-col>
+      <a-col :span="18" >
+        <a-layout-content
+            :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
+        >
+          <div class="welcome" v-show="isShowWelcome">
+            <the-welcome></the-welcome>
+          </div>
+          <!--        //这是一种互斥的做法-->
+          <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{gutter: 20, column: 3}"
+                  :data-source="ebooks">
+            <template #renderItem="{ item }">
+              <a-list-item key="item.name">
+                <template #actions>
+              <span>
             <component v-bind:is="'FileOutlined'" style="margin-right: 8px"/>
-            {{ item.docCount}}
+            {{ item.docCount }}
           </span>
-              <span >
+                  <span>
             <component v-bind:is="'LikeOutlined'" style="margin-right: 8px"/>
-            {{ item.viewCount}}
+            {{ item.viewCount }}
           </span>
-          <span >
+                  <span>
             <component v-bind:is="'MessageOutlined'" style="margin-right: 8px"/>
-            {{ item.voteCount}}
+            {{ item.voteCount }}
           </span>
+                </template>
+                <a-list-item-meta :description="item.description">
+                  <template #title>
+                    <router-link :to="'/doc?ebookId=' + item.id">
+                      {{ item.name }}
+                    </router-link>
+                  </template>
+                  <template #avatar>
+                    <a-avatar :src="item.cover"/>
+                  </template>
+                </a-list-item-meta>
+              </a-list-item>
             </template>
-            <a-list-item-meta :description="item.description">
-              <template #title>
-                <router-link :to="'/doc?ebookId=' + item.id">
-                  {{ item.name }}
-                </router-link>
-              </template>
-              <template #avatar>
-                <a-avatar :src="item.cover"/>
-              </template>
-            </a-list-item-meta>
-          </a-list-item>
-        </template>
-      </a-list>
-    </a-layout-content>
+          </a-list>
+        </a-layout-content>
+      </a-col>
+    </a-row>
   </a-layout>
 </template>
 
@@ -68,15 +76,15 @@
 
 import {defineComponent, onMounted, ref, reactive, toRef} from 'vue';
 import axios from 'axios'
-import { message } from 'ant-design-vue';
+import {message} from 'ant-design-vue';
 import {Tool} from "@/util/tool";
 import TheWelcome from '@/components/the-welcome.vue';
 import TheHeader from "@/components/the-header.vue";
 import TheFooter from "@/components/the-footer.vue";
 
-const isShowWelcome=ref(true);
+const isShowWelcome = ref(true);
 const level1 = ref();
-let categorys:any;
+let categorys: any;
 const listData: any = [];
 for (let i = 0; i < 23; i++) {
   listData.push({
@@ -98,12 +106,12 @@ export default defineComponent({
     const ebooks = ref();
     let category2Id = 0;
     const ebooks1 = reactive({books: []});
-    const handleQuery=()=>{
-      axios.get("/ebook/list?",{
-        params:{
-          page:1,
-          size:1000,
-          category2Id:category2Id
+    const handleQuery = () => {
+      axios.get("/ebook/list?", {
+        params: {
+          page: 1,
+          size: 1000,
+          category2Id: category2Id
         }
       }).then((response) => {
         const data = response.data;
@@ -126,13 +134,12 @@ export default defineComponent({
         }
       });
     };
-    const handleClick=(value:any)=>{
-      if(value.key === 'welcome')
-      {
-        isShowWelcome.value=true;
-      }else{
+    const handleClick = (value: any) => {
+      if (value.key === 'welcome') {
+        isShowWelcome.value = true;
+      } else {
         category2Id = value.key;
-        isShowWelcome.value=false;
+        isShowWelcome.value = false;
         handleQuery();
       }
 
