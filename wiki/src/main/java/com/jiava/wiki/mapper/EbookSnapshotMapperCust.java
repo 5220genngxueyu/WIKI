@@ -10,5 +10,6 @@ public interface EbookSnapshotMapperCust {
 
     public void dailyCount();
     public List<StatisticResp> getStatistic();
+    public List<StatisticResp> get30Statistic();
 
 }
