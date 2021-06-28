@@ -59,7 +59,7 @@
         <a-input v-model:value="category.sort" />
       </a-form-item>
       <a-form-item label="父分类">
-        <a-input v-model:value="category.parent" />
+
         <a-select
             v-model:value="category.parent"
             ref="select"
@@ -97,11 +97,6 @@ export default defineComponent({
       {
         title: '名称',
         dataIndex: 'name'
-      },
-      {
-        title: '父分类',
-        key:'parent',
-        dataIndex: 'parent'
       },
       {
         title: '顺序',

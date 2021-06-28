@@ -26,7 +26,7 @@
               :defaultExpandAllRow="true"
           >
             <template #name="{ text,record }">
-              {{ record.sort }} {{ text }}
+              {{ text }}
             </template>
             <template v-slot:action="{ text, record }">
               <a-space size="small">
